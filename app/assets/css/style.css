@@ -1,0 +1,17 @@
+body{
+    font-family: Tahoma, Geneva, sans-serif;
+    color: #FFFFFF;
+    background-color: #FF0C17;
+}
+
+.pixel{
+    width: 10px;
+    height: 10px;
+    float: left;
+    background-color: green;
+    border-right: 1px solid white;
+}
+
+.pixel.active{
+    background-color: red;
+}
