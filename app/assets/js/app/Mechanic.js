@@ -23,8 +23,6 @@ Module('Mechanic')({
                 this[key] = config[key];
             }, this);
             this._setInputs();
-
-            this.setup();
         },
 
         _setInputs : function(){

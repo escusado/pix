@@ -1,4 +1,5 @@
 Class('PixelStrip').inherits(Widget)({
+    ELEMENT_CLASS : 'pixel-strip',
     prototype : {
         data : [],
         fps : 20,
@@ -10,6 +11,7 @@ Class('PixelStrip').inherits(Widget)({
                 this.element.prepend('<div class="pixel i-'+i+'"></div>');
                 this.data.push(0);
             }
+            this.element.append('<div class="clearfix"></div>');
 
             this.pixels = this.element.find('.pixel');
 
@@ -18,7 +20,7 @@ Class('PixelStrip').inherits(Widget)({
 
         setPixel : function(index){
 
-            if(index > this.data.length-1 || index < 0){
+            if(index > this.data.length || index < 0){
                 console.error('Out of bounds');
                 return;
             }

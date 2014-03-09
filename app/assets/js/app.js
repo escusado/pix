@@ -2,6 +2,7 @@
 Inputs = {};
 
 Class('App').inherits(Widget)({
+    ELEMENT_CLASS : 'strip-game',
     prototype : {
         data : [],
         fps : 20,
@@ -20,11 +21,6 @@ Class('App').inherits(Widget)({
             });
             this.appendChild(this.stripController);
 
-            this.setup();
-        },
-
-        setup : function(){
-
         },
 
         update : function(){
@@ -34,7 +30,7 @@ Class('App').inherits(Widget)({
                     child.update();
                 });
 
-                this.fps=1;
+                this.fps=0;
             }
 
             this.dispatch('done');

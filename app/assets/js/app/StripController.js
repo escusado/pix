@@ -29,6 +29,7 @@ Class('StripController').includes(NodeSupport)({
                 ]
 
             });
+
             this.mechanic.setup();
             return true;
         },

@@ -3,9 +3,17 @@ Class('PongMechanic').inherits(Mechanic)({
         //this.inputs array has player inputs 0-X
         potIndex : 0,
         score : [0,0],
-        delta : 1,
+        delta : 0,
+        checkForScore : false,
+
         setup : function(){
             this.data.pixelStrip.setPixel(this.potIndex);
+
+            this.scoreCtrl = new ScoreController({
+                score : this.score
+            });
+
+            this.scoreCtrl.render($('.wrapper'));
 
             this.length = this.data.pixelStrip.pixels.length;
 
@@ -15,20 +23,19 @@ Class('PongMechanic').inherits(Mechanic)({
 
         update : function(){
             this.potIndex+=this.delta;
-            console.log('>>>>>>>>', this.potIndex, this.length);
-            if(this.potIndex > this.length){
-                this.score[0]++;
+
+            if(this.potIndex > this.length && this.checkForScore){
+                this.scoreForPlayer(0);
                 this.potIndex = this.length-1;
-                this.delta = -1;
+                // this.delta = -1;
             }
 
-            if(this.potIndex < 0){
-                this.score[1]++;
+            if(this.potIndex < 0 && this.checkForScore){
+                this.scoreForPlayer(0);
                 this.potIndex = 0;
-                this.delta = 1;
+                // this.delta = 1;
             }
 
-            console.log('score: ', this.score);
             this.data.pixelStrip.setPixel(this.potIndex);
         },
 
@@ -45,7 +52,24 @@ Class('PongMechanic').inherits(Mechanic)({
         },
 
         _pressPlayer : function(playerIndex){
-            this._delta = playerIndex ? 1 : -1;
+            this.delta = playerIndex ? -1 : 1;
+            this.checkForScore = true;
+        },
+
+        scoreForPlayer : function(playerIndex){
+            this.checkForScore = false;
+            this.delta = 0;
+            this.score[playerIndex]+=1;
+            this.updateUi(playerIndex);
+        },
+
+        updateUi : function(playerIndex){
+            this.scoreCtrl.setScore(this.score);
+            this.resetForPlayer(playerIndex);
+        },
+
+        resetForPlayer : function(playerIndex){
+            this.data.pixelStrip.setPixel(playerIndex ? this.length-1 : 0);
         }
 
     }
