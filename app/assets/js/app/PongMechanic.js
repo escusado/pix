@@ -3,23 +3,28 @@ Class('PongMechanic').inherits(Mechanic)({
         //this.inputs array has player inputs 0-X
         potIndex : 0,
         score : [0,0],
-        delta : 0,
+        // delta : 0,
+        delta : 1,
         checkForScore : false,
+        length : 90,
 
         setup : function(){
-            this.data.pixelStrip.setPixel(this.potIndex);
 
+            //Pixel Srip API
+            this.setupColors();
+            this.pixelStrip = new PixelStrip({
+                colorData : this.getInitialColors()
+            });
+            this.pixelStrip.render($('.pixel-strip-placeholder'));
+
+            //Score mockup
             this.scoreCtrl = new ScoreController({
                 score : this.score
             });
-
             this.scoreCtrl.render($('.wrapper'));
-
-            this.length = this.data.pixelStrip.pixels.length;
 
             this._bindEvents();
         },
-
 
         update : function(){
             this.potIndex+=this.delta;
@@ -36,7 +41,9 @@ Class('PongMechanic').inherits(Mechanic)({
                 // this.delta = 1;
             }
 
-            this.data.pixelStrip.setPixel(this.potIndex);
+            this.updateColors();
+
+            this.pixelStrip.update();
         },
 
         _bindEvents : function(){
@@ -70,6 +77,35 @@ Class('PongMechanic').inherits(Mechanic)({
 
         resetForPlayer : function(playerIndex){
             this.data.pixelStrip.setPixel(playerIndex ? this.length-1 : 0);
+        },
+
+        setupColors : function(){
+            this.colorScaleIndex = 0;
+            this.colorScaleSteps = 20;
+            var domainArray = [0,5,10,15,20];
+            this.colorScale = d3.scale.linear().domain(domainArray).range(['#80F31F','#FB3244','#472FFA','#3AFD5D']);
+        },
+
+        getInitialColors : function(){
+            var initialColors = new Array(this.length).join('0').split('');
+
+            initialColors.forEach(function(color, i){
+                initialColors[i] = this.getColor();
+            }, this);
+
+            return initialColors;
+        },
+
+        updateColors : function(){
+            this.pixelStrip.colorData.forEach(function(color, i){
+                this.pixelStrip.colorData[i] = this.getColor();
+            }, this);
+        },
+
+        getColor : function(){
+            this.colorScaleIndex = (this.colorScaleIndex > this.colorScaleSteps) ? 0 : this.colorScaleIndex+1;
+            console.log(this.colorScaleIndex);
+            return this.colorScale(this.colorScaleIndex);
         }
 
     }

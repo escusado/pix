@@ -1,46 +1,31 @@
 Class('PixelStrip').inherits(Widget)({
     ELEMENT_CLASS : 'pixel-strip',
     prototype : {
-        data : [],
+        colorData : ['red','green','red','green','red','green','red','green','red','green','red','green'],
+        pixels : [],
         fps : 20,
         init : function(config){
+            var pixel;
+
             Widget.prototype.init.call(this, config);
 
-            var i = this.size;
-            while(i--){
-                this.element.prepend('<div class="pixel i-'+i+'"></div>');
-                this.data.push(0);
+            for(var i = 0; i<this.colorData.length; i+=1){
+                pixel = $('<div class="pixel i-'+i+'"></div>');
+                this.pixels.push(pixel);
+                this.element.append(pixel);
             }
             this.element.append('<div class="clearfix"></div>');
-
-            this.pixels = this.element.find('.pixel');
-
             return this;
         },
 
-        setPixel : function(index){
-
-            if(index > this.data.length || index < 0){
-                console.error('Out of bounds');
-                return;
-            }
-
-            this.data[this.data.indexOf(1)] = 0;
-            this.data[index] = 1;
-        },
-
         update : function(){
-            this._cleanState();
             this._renderArray();
         },
 
-        _cleanState : function(){
-            this.pixels.removeClass('active');
-        },
-
-
         _renderArray : function(){
-            this.element.find('.i-'+this.data.indexOf(1)).addClass('active');
+            this.colorData.forEach(function(color, i){
+                this.pixels[i].css('background-color', color);
+            }, this);
         }
     }
 });

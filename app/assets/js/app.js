@@ -2,35 +2,25 @@
 Inputs = {};
 
 Class('App').inherits(Widget)({
-    ELEMENT_CLASS : 'strip-game',
+    ELEMENT_CLASS : 'pixel-strip-placeholder',
     prototype : {
         data : [],
-        fps : 20,
+        fps : 1,
+        _fps : 0,
         init : function(config){
             Widget.prototype.init.call(this, config);
+        },
 
-            this.pixelStrip = new PixelStrip({
-                size : this.stripSize
-            });
-
-            this.pixelStrip.render(this.element);
-            this.appendChild(this.pixelStrip);
-
-            this.stripController = new StripController({
-                pixelStrip : this.pixelStrip
-            });
-            this.appendChild(this.stripController);
-
+        setup : function(){
+            this.stripController = new StripController();
         },
 
         update : function(){
-            if(this.fps-- === 0){
+            this._fps+=1;
 
-                this.children.forEach(function(child){
-                    child.update();
-                });
-
-                this.fps=0;
+            if(this._fps === this.fps){
+                this.stripController.update();
+                this._fps=0;
             }
 
             this.dispatch('done');
@@ -46,6 +36,7 @@ $(document).ready(function(){
         stripSize : 60
     });
     app.render($('.wrapper'));
+    app.setup();
     app.bind('done', function(){
         requestAnimationFrame(app.update.bind(app));
     });
