@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Placeit app</title>
+    <link rel="icon" type="image/gif" href="/assets/img/favicon.gif" />
+
+    <!-- css -->
+    <link href="./assets/css/elastic.css" rel="stylesheet" type="text/css">
+    <link href="./assets/css/style.css" rel="stylesheet" type="text/css">
+
+    <!-- js -->
+    <script src="./assets/js/vendor/paper.js"></script>
+    <script src="./assets/js/vendor/d3.scale.js"></script>
+    <script src="./assets/js/vendor/jquery.js"></script>
+    <script src="./assets/js/vendor/socket.io.min.js"></script>
+    <script src="./assets/js/vendor/elastic.js"></script>
+    <script src="./assets/js/vendor/neon/neon.js"></script>
+
+    <script src="./assets/js/vendor/neon/std-lib/CustomEvent.js"></script>
+    <script src="./assets/js/vendor/neon/std-lib/NodeSupport.js"></script>
+    <script src="./assets/js/vendor/neon/std-lib/CustomEventSupport.js"></script>
+    <script src="./assets/js/vendor/neon/std-lib/Widget.js"></script>
+
+    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/app/PongMechanic.js"></script>
+    <script src="./assets/js/app/Ball.js"></script>
+
+
+<script id="script1" type="text/javascript">
+
+    //Sugar
+    $(document).ready(function(){
+        $('.wrapper').height($(window).height());
+
+        window.app = new App({
+            stripSize : 240
+        });
+        app.setup();
+        paper.view.onFrame = app.draw.bind(app);
+    });
+
+</script>
+
+</head>
+<body>
+    <div class="wrapper">
+
+        <canvas id="myCanvas" width="240" height="1"></canvas>
+
+    </div>
+</body>
+</html>
